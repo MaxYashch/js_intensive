@@ -1,4 +1,4 @@
-Array.prototype.myFilter = function (callback, thisObject) {
+h = function (callback, thisObject) {
   let filteredArray = [];
   if (thisObject) {
     callback = callback.bind(thisObject);
