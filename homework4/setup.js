@@ -1,13 +1,13 @@
 const concatStrings = (() => {
   let strings = [];
   let lastSeparator;
-  const concat = (string, separator) => {
+  const CONCAT = (string, separator) => {
     if (typeof string === 'string') {
       strings.push(string);
       if (typeof separator === 'string') {
         lastSeparator = separator;
       }
-      return concat;
+      return CONCAT;
     } else {
       let result = strings.join(lastSeparator || '');
       strings = [];
@@ -15,7 +15,7 @@ const concatStrings = (() => {
       return result;
     }
   };
-  return concat;
+  return CONCAT;
 })();
 
 class Calculator {
