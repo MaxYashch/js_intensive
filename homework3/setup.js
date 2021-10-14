@@ -4,7 +4,7 @@ h = function (callback, thisObject) {
     callback = callback.bind(thisObject);
   }
   let thisLength = this.length;
-  for (let i = 0; i < thisLength; i++) {
+  for (let i = 0; i < this.length; i++) {
     if (i in this) {
       if (callback(this[i], i, this)) {
         filteredArray.push(this[i]);
