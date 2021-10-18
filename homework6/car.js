@@ -5,30 +5,15 @@ class Car {
   #maxSpeed;
   #maxFuelVolume;
   #fuelConsumption;
-  #currentFuelVolume;
-  #isStarted;
-  #mileage;
-
-  // constructor(
-  //   brand,
-  //   model,
-  //   yearOfManufacturing,
-  //   maxSpeed,
-  //   maxFuelVolume,
-  //   fuelConsumption
-  // ) {
-  //   this.brand = brand;
-  //   this.model = model;
-  //   this.#isStarted = false;
-  //   this.#currentFuelVolume = 0;
-  //   this.#mileage = 0;
-  // }
+  #currentFuelVolume = 0;
+  #isStarted = false;
+  #mileage = 0;
 
   get brand() {
     return this.#brand;
   }
   set brand(value) {
-    if (typeof value !== 'string' && value.length < 1 && value.length > 50) {
+    if (typeof value !== 'string' || value.length < 1 || value.length > 50) {
       throw new Error('Enter valid brand!');
     }
     this.#brand = value;
@@ -38,7 +23,7 @@ class Car {
     return this.#model;
   }
   set model(value) {
-    if (typeof value !== 'string' && value.length < 1 && value.length > 50) {
+    if (typeof value !== 'string' || value.length < 1 || value.length > 50) {
       throw new Error('Enter valid model!');
     }
     this.#model = value;
@@ -49,9 +34,9 @@ class Car {
   }
   set yearOfManufacturing(value) {
     if (
-      !Number.isSafeInteger(value) &&
-      value <= new Date().getFullYear() &&
-      value >= 1900
+      !Number.isSafeInteger(value) ||
+      value >= new Date().getFullYear() ||
+      value <= 1900
     ) {
       throw new Error('Enter valid yearOfManufacturing!');
     }
@@ -62,7 +47,7 @@ class Car {
     return this.#maxSpeed;
   }
   set maxSpeed(value) {
-    if (!Number.isSafeInteger(value) && value <= 300 && value >= 100) {
+    if (!Number.isSafeInteger(value) || value > 300 || value < 100) {
       throw new Error('Enter valid maxSpeed!');
     }
     this.#maxSpeed = value;
@@ -72,7 +57,7 @@ class Car {
     return this.#maxFuelVolume;
   }
   set maxFuelVolume(value) {
-    if (!Number.isSafeInteger(value) && value <= 20 && value >= 5) {
+    if (!Number.isSafeInteger(value) || value > 20 || value < 5) {
       throw new Error('Enter valid maxFuelVolume!');
     }
     this.#maxFuelVolume = value;
@@ -81,7 +66,6 @@ class Car {
   get fuelConsumption() {
     return this.#fuelConsumption;
   }
-
   set fuelConsumption(value) {
     if (!Number.isSafeInteger(value)) {
       throw new Error('Enter valid fuelConsumption!');
@@ -89,24 +73,15 @@ class Car {
     this.#fuelConsumption = value;
   }
 
-  get currentFuelVolume(value = 0) {
-    if (!Number.isSafeInteger(value)) {
-      throw new Error('Enter valid currentFuelVolume!');
-    }
+  get currentFuelVolume() {
     return this.#currentFuelVolume;
   }
 
-  get isStarted(value = false) {
-    if (typeof value !== 'boolean') {
-      throw new Error('Enter valid fuelConsumption!');
-    }
+  get isStarted() {
     return this.#isStarted;
   }
 
-  get mileage(value = 0) {
-    if (!Number.isSafeInteger(value)) {
-      throw new Error('Enter valid mileage!');
-    }
+  get mileage() {
     return this.#mileage;
   }
 
@@ -125,20 +100,20 @@ class Car {
   }
 
   fillUpGasTank(fuel) {
-    if (!Number.isSafeInteger(fuel) || !Number.isSafeInteger(fuel) && fuel <= 0) {
+    if (!Number.isSafeInteger(fuel) || fuel <= 0) {
       throw new Error('Неверное количество топлива для заправки');
     }
-    if ((this.#currentFuelVolume + fuel) > this.#maxFuelVolume) {
+    if (this.#currentFuelVolume + fuel > this.#maxFuelVolume) {
       throw new Error('Топливный бак переполнен');
     }
     this.#currentFuelVolume += fuel;
   }
 
   drive(speed, hours) {
-    if (!Number.isSafeInteger(speed)) {
+    if (!Number.isSafeInteger(speed) || speed <= 0) {
       throw new Error('Неверная скорость');
     }
-    if (!Number.isSafeInteger(hours)) {
+    if (!Number.isSafeInteger(hours) || hours <= 0) {
       throw new Error('Неверное количество часов');
     }
     if (speed > this.#maxSpeed) {
@@ -147,11 +122,12 @@ class Car {
     if (!this.#isStarted) {
       throw new Error('Машина должна быть заведена, чтобы ехать');
     }
-    if ((speed * hours / this.#fuelConsumption) > this.#currentFuelVolume) {
-      throw new Error('Недостаточно топлива'); // here - condition
+
+    const consumed = (speed * hours * this.#fuelConsumption) / 100;
+    if (consumed > this.#currentFuelVolume) {
+      throw new Error('Недостаточно топлива');
     }
-    // В иных случаях вычесть необходимое топливо и добавить пробег
-    this.#currentFuelVolume = this.#currentFuelVolume - (speed * hours / this.#fuelConsumption);
+    this.#currentFuelVolume -= consumed;
     this.#mileage += speed * hours;
   }
 }
