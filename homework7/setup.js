@@ -1,11 +1,12 @@
-const display1El = document.querySelector('.display-1');
-const display2El = document.querySelector('.display-2');
-const tempResultEl = document.querySelector('.temp-result');
+const displayOperation = document.querySelector('.displayOperation');
+const displayMain = document.querySelector('.displayMain');
+const tempResult = document.querySelector('.tempResult');
 const numbersEl = document.querySelectorAll('.number');
 const operationEl = document.querySelectorAll('.operation');
 const equalEl = document.querySelector('.equal');
 const clearAllEl = document.querySelector('.all-clear');
-const clearLastEl = document.querySelector('.last-entity-clear');
+const oppositeEl = document.querySelector('.oppositeSign');
+const backspaceEl = document.querySelector('.backspace');
 let dis1Num = '';
 let dis2Num = '';
 let result = null;
@@ -20,8 +21,7 @@ numbersEl.forEach((number) => {
       return;
     }
     dis2Num += e.target.innerText;
-    display2El.innerText = dis2Num;
-    // console.log();
+    displayMain.innerText = dis2Num;
   });
 });
 
@@ -37,15 +37,15 @@ operationEl.forEach((operation) => {
     }
     clearVar(operationName);
     lastOperation = operationName;
-    console.log(result);
   });
 });
+
 function clearVar(name = '') {
   dis1Num += dis2Num + ' ' + name + ' ';
-  display1El.innerText = dis1Num;
-  display2El.innerText = '';
+  displayOperation.innerText = dis1Num;
+  displayMain.innerText = '';
   dis2Num = '';
-  tempResultEl.innerText = result;
+  tempResult.innerText = result;
 }
 
 function mathOperation() {
@@ -57,35 +57,37 @@ function mathOperation() {
     result = parseFloat(result) - parseFloat(dis2Num);
   } else if (lastOperation === '/') {
     result = parseFloat(result) / parseFloat(dis2Num);
-  } else if (lastOperation === '%') {
-    result = parseFloat(result) % parseFloat(dis2Num);
   }
 }
-// operation();
 
 equalEl.addEventListener('click', () => {
   if (!dis2Num || !dis1Num) return;
-  haveDot = false;
   mathOperation();
   clearVar();
-  display2El.innerText = result;
-  tempResultEl.innerText = '';
+  tempResult.innerText = '';
+  dis1Num = '';
+  if (result.toString().length > 10) {
+    result = result.toFixed(8);
+  }
   dis2Num = result;
-  dis1Num = '';
+  displayMain.innerText = result;
+  haveDot = true;
 });
 
-clearAllEl.addEventListener('click', () => {
-  dis1Num = '';
-  dis2Num = '';
-  display1El.innerText = '';
-  display2El.innerText = '';
-  result = '';
-  tempResultEl.innerText = '';
+oppositeEl.addEventListener('click', () => {
+  if (+displayMain.innerText === 0) {
+    return;
+  }
+  displayMain.innerText = +displayMain.innerText * -1;
+  dis2Num = displayMain.innerText;
 });
 
-clearLastEl.addEventListener('click', () => {
-  display2El.innerText = '';
-  dis2Num = '';
+backspaceEl.addEventListener('click', () => {
+  if (displayMain.innerText) {
+    displayMain.innerText = +displayMain.innerText.slice(0, -1);
+    dis2Num = displayMain.innerText;
+  }
+  return;
 });
 
 window.addEventListener('keydown', (e) => {
@@ -103,17 +105,17 @@ window.addEventListener('keydown', (e) => {
     e.key === '.'
   ) {
     clickButtonEl(e.key);
-    // console.log(e.key)
-  } else if (e.key === '+' || e.key === '-' || e.key === '/' || e.key === '%') {
+  } else if (e.key === '+' || e.key === '-' || e.key === '/') {
     clickOperation(e.key);
   } else if (e.key === '*') {
     clickOperation('x');
-    // console.log(e.key)
   } else if (e.key == 'Enter' || e.key === '=') {
     clickEqual();
+  } else if (e.key == 'Escape') {
+    clearAll();
   }
-  // console.log(e.key)
 });
+
 function clickButtonEl(key) {
   numbersEl.forEach((button) => {
     if (button.innerText === key) {
@@ -121,6 +123,7 @@ function clickButtonEl(key) {
     }
   });
 }
+
 function clickOperation(key) {
   operationEl.forEach((operation) => {
     if (operation.innerText === key) {
@@ -128,6 +131,19 @@ function clickOperation(key) {
     }
   });
 }
+
 function clickEqual() {
   equalEl.click();
+}
+
+clearAllEl.addEventListener('click', clearAll);
+
+function clearAll() {
+  dis1Num = '';
+  dis2Num = '';
+  result = '';
+  displayOperation.innerText = '';
+  displayMain.innerText = '';
+  tempResult.innerText = '';
+  haveDot = false;
 }
