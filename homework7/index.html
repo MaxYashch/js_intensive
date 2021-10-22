@@ -3,7 +3,81 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
+    <style>
+      *{padding: 0;    margin: 0;    border: 0;}
+      button{cursor: pointer;}
+      button::-moz-focus-inner{padding: 0; border: 0;}
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      .wrapper {
+        height: 50%;
+        width: 50%;
+        margin: auto;
+        margin-top: 40px;
+        border: 2px solid blue;
+        padding: 20px 30px;
+        background-color: #5CCCCC;      
+      }
+      .display {
+        background-color: rgb(182, 182, 182);
+        width: 100%;
+        text-align: right;
+        padding: 10px;
+        font-size: 20px;
+        position: relative;
+      }
+      .displayOperation {
+        opacity: 0.4;
+        font-size: 20px;
+        height: 20px;
+        overflow: hidden;
+      }
+      .displayMain {
+        opacity: 1;
+        font-size: 20px;
+        overflow: hidden;
+      }
+      .tempResult {
+        position: absolute;
+        bottom: 0;
+        left: 10;
+        font-size: 20px;
+        opacity: 0.3;
+      }
+      .all_button {
+        margin-top: 30px;
+        color: blue;
+        display: grid;
+        grid-template: repeat(5, 1fr) / repeat(5, 1fr);
+        justify-content:space-between;
+      }
+      .all_button--button {
+        background-color: whitesmoke;
+        border: 2px solid rgba(92, 92, 92, 0.137);
+        display: block;
+        height: 60px;
+        width: 90%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        cursor: pointer;
+        margin: 5px;
+      }
+      .all_button--button:hover {
+        background-color: rgb(30, 43, 46);
+      }
+      .span-two {
+        grid-column: span 2;
+        width: 95%;
+      }
+      .red {
+        background-color: tomato;
+      }
+    </style>
     <script src="https://kit.fontawesome.com/35040273b8.js" crossorigin="anonymous"></script>
     <title>Calculator</title>
   </head>

@@ -82,13 +82,15 @@ oppositeEl.addEventListener('click', () => {
   dis2Num = displayMain.innerText;
 });
 
-backspaceEl.addEventListener('click', () => {
+backspaceEl.addEventListener('click', backspace);
+
+function backspace() {
   if (displayMain.innerText) {
     displayMain.innerText = +displayMain.innerText.slice(0, -1);
     dis2Num = displayMain.innerText;
   }
   return;
-});
+}
 
 window.addEventListener('keydown', (e) => {
   if (
@@ -113,6 +115,8 @@ window.addEventListener('keydown', (e) => {
     clickEqual();
   } else if (e.key == 'Escape') {
     clearAll();
+  } else if (e.key == 'Backspace') {
+    backspace();
   }
 });
 
